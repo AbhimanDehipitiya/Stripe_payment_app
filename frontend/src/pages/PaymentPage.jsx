@@ -26,7 +26,6 @@ export default function PaymentPage() {
           Secure payment powered by Stripe
         </p>
 
-        {/* ⬇️ Elements mounted ONCE */}
         <StripeProvider clientSecret={clientSecret}>
           <CheckoutForm />
         </StripeProvider>

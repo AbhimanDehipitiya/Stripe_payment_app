@@ -12,6 +12,11 @@
   "type": "module",
   "dependencies": {
     "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "express-rate-limit": "^7.0.0",
+    "morgan": "^1.10.0",
+    "compression": "^1.7.4",
+    "express-validator": "^7.0.1",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "stripe": "^20.1.0"

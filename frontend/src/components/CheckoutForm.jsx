@@ -1,4 +1,5 @@
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { createPaymentIntent } from "../services/payment.service";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -7,9 +8,13 @@ export default function CheckoutForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { error, paymentIntent } =
-      await stripe.confirmCardPayment(
-        elements._clientSecret,
+    if (!stripe || !elements) return;
+
+    try {
+      const { clientSecret } = await createPaymentIntent(10);
+
+      const { error, paymentIntent } = await stripe.confirmCardPayment(
+        clientSecret,
         {
           payment_method: {
             card: elements.getElement(CardElement)
@@ -17,9 +22,13 @@ export default function CheckoutForm() {
         }
       );
 
-    if (error) alert(error.message);
-    else if (paymentIntent.status === "succeeded")
-      alert("Payment successful 🎉");
+      if (error) alert(error.message);
+      else if (paymentIntent && paymentIntent.status === "succeeded")
+        alert("Payment successful 🎉");
+    } catch (err) {
+      console.error(err);
+      alert("Payment failed: " + (err.message || err));
+    }
   };
 
   return (
